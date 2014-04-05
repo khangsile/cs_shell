@@ -1,14 +1,20 @@
 %{
 #include "variables.h"
+
+char* yytext2;
 %}
 
 %%
-[A-Za-z0-9^\%\>\<]+  return WORD;
-[\%|\>|\<]  return SPECIAL;
 
-\n  NEWLINE;
-
-.  printf("unexpected character\n");
+[^ %><\n\"]+  return WORD;
+[%><]  return SPECIAL;
+\"(.*)\"  { yytext2 = yytext++; 
+  int i=0;
+  for(i=0; yytext[i] != '\0'; i++) {
+  }
+  yytext[i-1] = '\0';
+  return STRING; }
+\n return NEWLINE;
 
 %%
 
