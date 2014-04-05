@@ -6,7 +6,7 @@ char* yytext2;
 
 %%
 
-[^ %><\n\"]+  return WORD;
+[^ %><\n\"\t]+  return WORD;
 [%><]  return SPECIAL;
 \"(.*)\"  { 
   yytext++; 
@@ -16,6 +16,7 @@ char* yytext2;
   return STRING; 
 }
 \n return NEWLINE;
+[ \t]+  ;
 
 %%
 

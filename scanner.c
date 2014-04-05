@@ -9,6 +9,7 @@ extern int yyleng;
 extern char* yytext;
 
 char* cpystr(char*);
+void printToken(struct token*);
 
 struct token **head = NULL;
 
@@ -21,7 +22,7 @@ int main(void) {
   struct token *hd = (struct token*) malloc(sizeof(struct token));
   hd->type = ntoken;
   hd->text = cpystr(yytext);
-  printf("%d: %s\n", hd->type, hd->text);
+  printToken(hd);
 
   // Set the head ptr
   head = &hd;
@@ -31,8 +32,7 @@ int main(void) {
     struct token *tk = (struct token*) malloc(sizeof(struct token));
     tk->type = ntoken;
     tk->text = cpystr(yytext);
-    if (tk->type != 4)
-      printf("%d: %s\n", tk->type, tk->text);
+    printToken(tk);
     ntoken = yylex();
   }
 
@@ -46,4 +46,24 @@ char* cpystr(char* str) {
   char *cpy = (char*) malloc(size);
   strcpy(cpy, str);
   return cpy;
+}
+
+void printToken(struct token *tk) {
+  char* type;
+  char* text = tk->text;
+  switch(tk->type) {
+  case 1:
+    type = "word";
+    break;
+  case 2:
+    type = "metachar";
+    break;
+  case 3:
+    type = "string";
+    break;
+  case 4:
+    type = "end-of-line";
+    text = "EOL";
+  }
+  printf("Token Type = %s Token = %s\n", type, text);
 }
