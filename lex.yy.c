@@ -736,25 +736,26 @@ return SPECIAL;
 case 3:
 YY_RULE_SETUP
 #line 11 "scanner.l"
-{ yytext2 = yytext++; 
+{ 
+  yytext++; 
   int i=0;
-  for(i=0; yytext[i] != '\0'; i++) {
-  }
+  for(i=0; yytext[i] != '\0'; i++) {}
   yytext[i-1] = '\0';
-  return STRING; }
+  return STRING; 
+}
 	YY_BREAK
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 17 "scanner.l"
+#line 18 "scanner.l"
 return NEWLINE;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 19 "scanner.l"
+#line 20 "scanner.l"
 ECHO;
 	YY_BREAK
-#line 758 "lex.yy.c"
+#line 759 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1751,7 +1752,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 19 "scanner.l"
+#line 20 "scanner.l"
 
 
 

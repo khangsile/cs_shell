@@ -8,12 +8,13 @@ char* yytext2;
 
 [^ %><\n\"]+  return WORD;
 [%><]  return SPECIAL;
-\"(.*)\"  { yytext2 = yytext++; 
+\"(.*)\"  { 
+  yytext++; 
   int i=0;
-  for(i=0; yytext[i] != '\0'; i++) {
-  }
+  for(i=0; yytext[i] != '\0'; i++) {}
   yytext[i-1] = '\0';
-  return STRING; }
+  return STRING; 
+}
 \n return NEWLINE;
 
 %%
