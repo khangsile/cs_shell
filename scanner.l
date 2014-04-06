@@ -16,6 +16,12 @@ char* yytext2;
   return STRING; 
 }
 \n return NEWLINE;
+"prompt" return WORD;
+"setenv" return WORD;
+"unsetenv" return WORD;
+"listenv" return WORD;
+"setdir" return WORD;
+"bye" return WORD;
 [ \t]+  ;
 
 %%
