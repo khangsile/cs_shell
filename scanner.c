@@ -10,21 +10,29 @@ extern char* yytext;
 
 char* cpystr(char*);
 void printToken(struct token*);
-
-struct token **head = NULL;
+struct token** getTokens();
 
 int main(void) {
 
+  struct token** head = getTokens();
+
+  freeTokenList(head);
+
+  return 0;
+}
+
+struct token** getTokens() {
   int ntoken, vtoken;
 
-  // Get head first.
+  struct token **head = NULL;
+  // Get head first.                                                                                       
   ntoken = yylex();
   struct token *hd = (struct token*) malloc(sizeof(struct token));
   hd->type = ntoken;
   hd->text = cpystr(yytext);
   printToken(hd);
 
-  // Set the head ptr
+  // Set the head ptr                                                                             
   head = &hd;
 
   ntoken = yylex();
@@ -36,9 +44,7 @@ int main(void) {
     ntoken = yylex();
   }
 
-  freeTokenList(head);
-
-  return 0;
+  return head;
 }
 
 char* cpystr(char* str) {
