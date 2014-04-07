@@ -32,6 +32,9 @@ struct token** getTokens() {
     struct token *tk = (struct token*) malloc(sizeof(struct token));
     tk->type = ntoken;
     tk->text = cpystr(yytext);
+
+    addToken(head, tk);
+
     printToken(tk);
     if (ntoken == NEWLINE) break;
     ntoken = yylex();
