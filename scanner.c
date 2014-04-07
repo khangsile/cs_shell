@@ -49,7 +49,7 @@ struct token** getTokens() {
 
 char* cpystr(char* str) {
   int size = strlen(str);
-  char *cpy = (char*) malloc(size*sizeof(char));
+  char *cpy = (char*) malloc((size+1)*sizeof(char));
   strcpy(cpy, str);
   return cpy;
 }

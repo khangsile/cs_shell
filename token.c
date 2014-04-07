@@ -28,6 +28,7 @@ void freeTokens(struct token* t) {
 void freeToken(struct token* t) {
   if (t == NULL) return;
   //printf("%s\n", t->text);
+  printf("HEREHERE");
   if (t->text != NULL)
     free(t->text);
   free(t);
