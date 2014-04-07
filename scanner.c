@@ -41,6 +41,7 @@ struct token** getTokens() {
     tk->type = ntoken;
     tk->text = cpystr(yytext);
     printToken(tk);
+    if (ntoken == NEWLINE) break;
     ntoken = yylex();
   }
 
