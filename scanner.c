@@ -23,7 +23,6 @@ struct token** getTokens() {
   hd->type = ntoken;
   hd->text = cpystr(yytext);
   hd->next = NULL;
-
   printToken(hd);
 
   // Set the head ptr                                                                             
@@ -34,7 +33,6 @@ struct token** getTokens() {
     tk->type = ntoken;
     tk->text = cpystr(yytext);
     tk->next = NULL;
-
     addToken(head, tk);
 
     if (ntoken == NEWLINE) break;

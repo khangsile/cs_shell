@@ -35,12 +35,14 @@ struct command* parse(struct token** tokenList) {
     curr = curr->next;    
     cmd->arg_count++;
   }
+
   cmd->args = malloc(cmd->arg_count * sizeof(char*));
   int i;
   for(i=0; i<cmd->arg_count; i++) {
     cmd->args[i] = t->text;
     t = t->next;
   }
+
   // check for redirect in
   if(t != NULL && t->type == SPECIAL && !strcmp(t->text,"<")) {
     t = t->next;
@@ -62,7 +64,6 @@ struct command* parse(struct token** tokenList) {
     } else {
       // syntax error
     }      
-  } 
-
+  }
   return cmd;
 }

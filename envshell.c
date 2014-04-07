@@ -4,9 +4,12 @@
 #include "variables.h"
 #include <string.h>
 #include <unistd.h>
+#include <stdlib.h>
+#include "builtin.h"
 
 
 int builtinCommand(struct command* cmd);
+void executeBuiltin(int cmd, char** args, int argc);
 
 int main() {
   char* environ[100];
@@ -15,21 +18,27 @@ int main() {
   while(1) {
     struct token** tokenList = getTokens();
     struct command* cmd = parse(tokenList);
+
     printCommand(cmd);
     //freeTokenList(tokenList);
+    
     int builtin;
     // if built in command
     if(builtin = builtinCommand(cmd)) {
-      
+      printf("Executing builtin... ");
+      executeBuiltin(builtin, cmd->args, cmd->arg_count);
     } else { 
+      printf("Executing non-builtin... ");
       int child_status,pid;
       pid = fork();
       if(pid>0) {
 	// parent process
 	printf("PID: %d\n", pid);
+	printf("Parent\n");
 	waitpid(pid,&child_status,0);
       } else {
 	// child process
+	printf("Child");
 	execve(cmd->cmd,cmd->args,environ);
 	exit(0);
       }
@@ -52,5 +61,10 @@ int builtinCommand(struct command* cmd) {
     return SETDIR;
   if(!strcmp(cmd->cmd,"bye"))
     return BYE;
-  return 0;  
+  return 0;
+}
+
+void executeBuiltin(int cmd, char** args, int argc) {
+  if(cmd == SETDIR)
+    setdir(args,argc);
 }
