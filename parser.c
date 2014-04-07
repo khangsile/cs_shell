@@ -27,15 +27,16 @@ struct command* parse(struct token** tokenList) {
       // error
     }
   }
-  // get args
+
   struct token* curr = t;
   cmd->arg_count = 0;
   // count args
   while(curr != NULL && curr->type != NEWLINE && curr->type != SPECIAL) {
     curr = curr->next;    
+    printf("%p\n",*tokenList);
     cmd->arg_count++;
   }
-
+  // get args  
   cmd->args = malloc(cmd->arg_count * sizeof(char*));
   int i;
   for(i=0; i<cmd->arg_count; i++) {

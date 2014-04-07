@@ -16,6 +16,7 @@ int main() {
   //environ[0] = NULL:
 
   while(1) {
+    
     struct token** tokenList = getTokens();
     struct command* cmd = parse(tokenList);
     
