@@ -16,7 +16,7 @@ int main() {
     struct token** tokenList = getTokens();
     struct command* cmd = parse(tokenList);
     printCommand(cmd);
-    
+    //freeTokenList(tokenList);
     int builtin;
     // if built in command
     if(builtin = builtinCommand(cmd)) {
@@ -26,6 +26,7 @@ int main() {
       pid = fork();
       if(pid>0) {
 	// parent process
+	printf("PID: %d\n", pid);
 	waitpid(pid,&child_status,0);
       } else {
 	// child process
@@ -33,7 +34,7 @@ int main() {
 	exit(0);
       }
     }
-    freeTokenList(tokenList);
+    //    freeTokenList(tokenList);
     freeCommand(cmd);
   }
 }

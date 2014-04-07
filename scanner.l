@@ -6,7 +6,8 @@ char* yytext2;
 
 %%
 
-[^ %><\n\"\t]+  return WORD;
+\n return NEWLINE;
+[^" \t\n\r\%\>\<]+  return WORD;
 [%><]  return SPECIAL;
 \"(.*)\"  { 
   yytext++; 
@@ -15,15 +16,7 @@ char* yytext2;
   yytext[i-1] = '\0';
   return STRING; 
 }
-\n return NEWLINE;
-"prompt" return WORD;
-"setenv" return WORD;
-"unsetenv" return WORD;
-"listenv" return WORD;
-"setdir" return WORD;
-"bye" return WORD;
-[ \t]+  ;
-
+[ \t] ;
 %%
 
 int yywrap(void)

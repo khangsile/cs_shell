@@ -40,8 +40,10 @@ struct token** getTokens() {
     if (ntoken == NEWLINE) break;
 
     printToken(tk);
-    ntoken = yylex();
+    //    ntoken = yylex();
   }
+
+  printf("We're done\n");
 
   return head;
 }
