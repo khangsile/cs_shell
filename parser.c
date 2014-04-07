@@ -66,6 +66,5 @@ struct command* parse(struct token** tokenList) {
       // syntax error
     }      
   }
-
   return cmd;
 }
