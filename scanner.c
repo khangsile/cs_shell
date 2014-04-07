@@ -29,8 +29,7 @@ struct token** getTokens() {
   // Set the head ptr                                                                             
   head = &hd;
 
-  ntoken = yylex();
-  while(ntoken) {
+  while(ntoken = yylex()) {
     struct token *tk = (struct token*) malloc(sizeof(struct token));
     tk->type = ntoken;
     tk->text = cpystr(yytext);
