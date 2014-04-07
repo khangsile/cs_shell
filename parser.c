@@ -4,7 +4,6 @@
 
 void printCommand(struct command* cmd) {
   printf("cmd: %s, args: ", cmd->cmd);
-  printf("dkdk\n");
   int i;
   for(i=0; i<cmd->arg_count; i++)
     printf("%s ", cmd->args[i]);  
@@ -22,7 +21,7 @@ struct command* parse(struct token** tokenList) {
   if(t != NULL) {
     if(t->type == WORD) {
       cmd->cmd = t->text;
-      printf("%s\n",t->text);
+      t = t->next;
     } else {
       // error
     }
@@ -31,8 +30,8 @@ struct command* parse(struct token** tokenList) {
   struct token* curr = t;
   cmd->arg_count = 0;
   // count args
-  while(curr != NULL && curr->type != NEWLINE && !strcmp(curr->text,"<")) {
-    curr = curr->next;
+  while(curr != NULL && curr->type != NEWLINE && strcmp(curr->text,"<")) {
+    curr = curr->next;    
     cmd->arg_count++;
   }
   printf("%d\n",cmd->arg_count);
@@ -43,7 +42,7 @@ struct command* parse(struct token** tokenList) {
     t = t->next;
   }
   // check for redirect in
-  if(t->type != NEWLINE && !strcmp(curr->text,"<")) {
+  if(t != NULL && t->type != NEWLINE && strcmp(curr->text,"<")) {
     // next token must be file
     if(t->next != NULL && t->next->type == WORD) {
       t = t->next;      
@@ -53,7 +52,7 @@ struct command* parse(struct token** tokenList) {
     }      
   }
   // check for redirect out
-  if(t->type != NEWLINE && !strcmp(curr->text,">")) {
+  if(t != NULL && t->type != NEWLINE && !strcmp(curr->text,">")) {
     // next token must be file
     if(t->next != NULL && t->next->type == WORD) {
       t = t->next;      
@@ -62,4 +61,5 @@ struct command* parse(struct token** tokenList) {
       // syntax error
     }      
   } 
+  return cmd;
 }

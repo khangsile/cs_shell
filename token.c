@@ -2,9 +2,13 @@
 
 void addToken(struct token** head, struct token* t) {
   struct token* curr = *head;
-  while(curr->next != NULL)
-    curr = curr->next;
-  curr->next = t;
+  if(curr == NULL) {
+    curr = t;
+  } else {
+    while(curr->next != NULL)
+      curr = curr->next;
+    curr->next = t;
+  }
 }
 
 void freeTokenList(struct token** head) {
