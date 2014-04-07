@@ -9,12 +9,9 @@
 int builtinCommand(struct command* cmd);
 
 int main() {
-  //  char* environ[100];
-  //  environ[0] = NULL:
-  struct token** tokenList = getTokens();
-  struct command* cmd = parse(tokenList);
-  printCommand(cmd);
-    /*
+  char* environ[100];
+  //environ[0] = NULL:
+
   while(1) {
     struct token** tokenList = getTokens();
     struct command* cmd = parse(tokenList);
@@ -25,20 +22,20 @@ int main() {
     if(builtin = builtinCommand(cmd)) {
       
     } else { 
-      int pid = fork();
-      // child process
-      if(pid) {
-	execve(
-      } else {
+      int child_status,pid;
+      pid = fork();
+      if(pid>0) {
 	// parent process
-	wait();
+	waitpid(pid,&child_status,0);
+      } else {
+	// child process
+	execve(cmd->cmd,cmd->args,environ);
+	exit(0);
       }
     }
-
-
     freeTokenList(tokenList);
-    freeCommand(cmd);
-    } */
+    //    freeCommand(cmd);
+  }
 }
 
 int builtinCommand(struct command* cmd) {
