@@ -16,7 +16,7 @@ struct token** getTokens();
 struct token** getTokens() {
   int ntoken, vtoken;
 
-  struct token **head = NULL;
+  struct token **head = (struct token**) malloc(sizeof(struct token*));
   // Get head first.                                                                                       
   ntoken = yylex();
   struct token *hd = (struct token*) malloc(sizeof(struct token));
@@ -35,8 +35,9 @@ struct token** getTokens() {
     tk->next = NULL;
     addToken(head, tk);
 
-    printToken(tk);
     if (ntoken == NEWLINE) break;
+
+    printToken(tk);
     ntoken = yylex();
   }
 
@@ -45,7 +46,7 @@ struct token** getTokens() {
 
 char* cpystr(char* str) {
   int size = strlen(str);
-  char *cpy = (char*) malloc(size);
+  char *cpy = (char*) malloc((size+1)*sizeof(char));
   strcpy(cpy, str);
   return cpy;
 }
