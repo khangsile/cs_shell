@@ -22,6 +22,7 @@ struct token** getTokens() {
   struct token *hd = (struct token*) malloc(sizeof(struct token));
   hd->type = ntoken;
   hd->text = cpystr(yytext);
+  hd->next = NULL;
   printToken(hd);
 
   // Set the head ptr                                                                             
@@ -31,7 +32,7 @@ struct token** getTokens() {
     struct token *tk = (struct token*) malloc(sizeof(struct token));
     tk->type = ntoken;
     tk->text = cpystr(yytext);
-
+    tk->next = NULL;
     addToken(head, tk);
 
     printToken(tk);
