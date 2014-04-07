@@ -14,12 +14,15 @@ void addToken(struct token** head, struct token* t) {
 }
 
 void freeTokenList(struct token** head) {
-  struct token *curr = *head, *next = *head;
-  while(curr != NULL) {
-    next = curr->next;
-    freeToken(curr);
-    curr = next;
-  }
+  struct token* curr = *head;
+  freeTokens(curr);
+}
+
+void freeTokens(struct token* t) {
+  if(t == NULL)
+    return;
+  freeTokens(t->next);
+  freeToken(t);
 }
 
 void freeToken(struct token* t) {
