@@ -8,5 +8,6 @@ int main() {
   struct token** tokenList = getTokens();
   struct command* cmd = parse(tokenList);
   printCommand(cmd);
-  
+  freeTokenList(tokenList);
+  freeCommand(cmd);
 }
