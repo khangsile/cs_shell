@@ -16,12 +16,14 @@ struct token** getTokens();
 struct token** getTokens() {
   int ntoken, vtoken;
 
-  struct token **head = NULL;
+  struct token **head = (struct token**) malloc(sizeof(struct token*));
   // Get head first.                                                                                       
   ntoken = yylex();
   struct token *hd = (struct token*) malloc(sizeof(struct token));
   hd->type = ntoken;
   hd->text = cpystr(yytext);
+  hd->next = NULL;
+
   printToken(hd);
 
   // Set the head ptr                                                                             
@@ -32,11 +34,13 @@ struct token** getTokens() {
     struct token *tk = (struct token*) malloc(sizeof(struct token));
     tk->type = ntoken;
     tk->text = cpystr(yytext);
+    tk->next = NULL;
 
     addToken(head, tk);
 
-    printToken(tk);
     if (ntoken == NEWLINE) break;
+
+    printToken(tk);
     ntoken = yylex();
   }
 
@@ -45,7 +49,7 @@ struct token** getTokens() {
 
 char* cpystr(char* str) {
   int size = strlen(str);
-  char *cpy = (char*) malloc(size);
+  char *cpy = (char*) malloc(size*sizeof(char));
   strcpy(cpy, str);
   return cpy;
 }
