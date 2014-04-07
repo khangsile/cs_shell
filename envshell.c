@@ -34,7 +34,7 @@ int main() {
       }
     }
     freeTokenList(tokenList);
-    //    freeCommand(cmd);
+    freeCommand(cmd);
   }
 }
 

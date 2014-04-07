@@ -3,8 +3,9 @@
 
 void addToken(struct token** head, struct token* t) {
   struct token* curr = *head;
-  if(curr == NULL) {
-    curr = t;
+  t->next = NULL;
+  if(head == NULL) {
+    head = &t;
   } else {
     while(curr->next != NULL)
       curr = curr->next;
