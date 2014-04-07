@@ -1,12 +1,10 @@
 #include <stdlib.h>
 
 struct token {
-
-  int type;
-  int usage;
   char* text;
   struct token* next;
-
+  int type;
+  int usage;
 };
 
 void addToken(struct token** head, struct token* t);

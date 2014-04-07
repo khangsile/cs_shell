@@ -6,8 +6,8 @@ TARGET = main
 
 all: $(TARGET)
 
-$(TARGET): scanner.c
-	$(CC) -o $(TARGET) scanner.c lex.yy.c token.c
+$(TARGET): envshell.c
+	$(CC) -o $(TARGET) scanner.c lex.yy.c token.c parser.c envshell.c
 
 clean: 
 	$(RM) $(TARGET)

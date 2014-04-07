@@ -1,4 +1,4 @@
-#include <stdlib.o>
+#include <stdlib.h>
 #include "token.h"
 
 struct command {
@@ -9,4 +9,4 @@ struct command {
   int arg_count;
 };
 
-struct command* parse(struct token* t);
+struct command* parse(struct token** t);

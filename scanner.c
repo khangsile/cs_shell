@@ -2,6 +2,7 @@
 #include <string.h>
 #include "variables.h"
 #include "token.h"
+#include "scanner.h"
 
 extern int yylex();
 extern int yylineno;
@@ -11,15 +12,6 @@ extern char* yytext;
 char* cpystr(char*);
 void printToken(struct token*);
 struct token** getTokens();
-
-int main(void) {
-
-  struct token** head = getTokens();
-
-  freeTokenList(head);
-
-  return 0;
-}
 
 struct token** getTokens() {
   int ntoken, vtoken;
