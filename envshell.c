@@ -7,49 +7,57 @@
 #include <stdlib.h>
 #include "builtin.h"
 
+#define MAX 100
 
-int builtinCommand(struct command* cmd);
+int builtinCommand(command* cmd);
 void executeBuiltin(int cmd, char** args, int argc);
 
 int main() {
-  char* environ[100];
+  char* environ[MAX];
   //environ[0] = NULL:
+  char* args[MAX];
 
   while(1) {
-    
+    printf("envsh > ");
     struct token** tokenList = getTokens();
-    struct command* cmd = parse(tokenList);
+    command cmd;
+    cmd.args = args;
+    parse(tokenList, &cmd);
+    // if num of args does not exceed capacity
+    if(cmd.arg_count < MAX) {
+      cmd.args[cmd.arg_count] = NULL;
+    } else {
+      printf("Max arguments exceeded.");
+    }
 
-    printCommand(cmd);
-    //freeTokenList(tokenList);
-    
     int builtin;
     // if built in command
-    if(builtin = builtinCommand(cmd)) {
-      printf("Executing builtin... ");
-      executeBuiltin(builtin, cmd->args, cmd->arg_count);
+    if(builtin = builtinCommand(&cmd)) {
+      //      printf("Executing builtin... \n");
+      executeBuiltin(builtin, cmd.args, cmd.arg_count);
+      printf("\n");
     } else { 
-      printf("Executing non-builtin... ");
+      //      printf("Executing non-builtin... \n");
       int child_status,pid;
       pid = fork();
       if(pid>0) {
 	// parent process
-	printf("PID: %d\n", pid);
-	printf("Parent\n");
 	waitpid(pid,&child_status,0);
       } else {
 	// child process
-	printf("Child");
-	execve(cmd->cmd,cmd->args,environ);
+	int ret = execve(cmd.cmd,cmd.args,environ);
+	if(ret < 0)
+	  perror("Error");
 	exit(0);
       }
     }
+
     //    freeTokenList(tokenList);
-    freeCommand(cmd);
+    //    freeCommand(cmd);
   }
 }
 
-int builtinCommand(struct command* cmd) {
+int builtinCommand(command* cmd) {
   if(!strcmp(cmd->cmd,"prompt"))
     return PROMPT;
   if(!strcmp(cmd->cmd,"setenv"))
