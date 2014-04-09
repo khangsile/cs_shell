@@ -41,6 +41,27 @@ void printTokens(struct token** head) {
 
 void printtk(struct token* tk) {
   if (tk == NULL) return;
-  printf("%d: %s\n", tk->type, tk->text);
+  printToken(tk);
   printtk(tk->next);
 }
+
+void printToken(struct token *tk) {
+  char* type;
+  char* text = tk->text;
+  switch(tk->type) {
+  case 1:
+    type = "word";
+    break;
+  case 2:
+    type = "metachar";
+    break;
+  case 3:
+    type = "string";
+    break;
+  case 4:
+    type = "end-of-line";
+    text = "EOL";
+  }
+  printf("Token Type = %s Token = %s\n", type, text);
+}
+
