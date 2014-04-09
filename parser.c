@@ -28,6 +28,8 @@ int builtinCommand(command* cmd) {
 void parse(struct token** tokenList, command* cmd) {
   struct token* t = *tokenList;
 
+  cmd->cmd = NULL; cmd->output = NULL; cmd->input = NULL;
+
   // get command from first token
   if(t != NULL) {
     if(t->type == WORD) {

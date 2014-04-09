@@ -1,5 +1,5 @@
-#include "token.h";
-#include <stdio.h>;
+#include "token.h"
+#include <stdio.h>
 
 void addToken(struct token** head, struct token* t) {
   struct token* curr = *head;
