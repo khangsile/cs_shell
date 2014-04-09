@@ -18,13 +18,21 @@ struct token** getTokens(struct token** head) {
   ntoken = yylex();
   struct token* hd = (struct token*) malloc(sizeof(struct token));
   hd->type = ntoken;
-  hd->text = cpystr(yytext);
+
+  if (hd->type != END_OF_FILE)
+    hd->text = cpystr(yytext);
+  else {
+    printf("\n");
+    hd->type = WORD;
+    hd->text = cpystr("bye");
+  }
+
   hd->next = NULL;
 
   // Set the head
   *head = hd;
 
-  if (hd->type == NEWLINE)
+  if (hd->type == NEWLINE || ntoken == END_OF_FILE)
     return head;
 
   while(ntoken = yylex()) {

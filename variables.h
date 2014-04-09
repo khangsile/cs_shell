@@ -2,6 +2,7 @@
 #define SPECIAL 2
 #define STRING 3
 #define NEWLINE 4
+#define END_OF_FILE 5
 
 // built-in commands
 #define PROMPT 1

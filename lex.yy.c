@@ -755,14 +755,16 @@ YY_RULE_SETUP
 #line 19 "scanner.l"
 ;
 	YY_BREAK
+case YY_STATE_EOF(INITIAL):
+#line 20 "scanner.l"
+return END_OF_FILE;
+	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 20 "scanner.l"
+#line 21 "scanner.l"
 ECHO;
 	YY_BREAK
-#line 764 "lex.yy.c"
-case YY_STATE_EOF(INITIAL):
-	yyterminate();
+#line 768 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1757,7 +1759,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 20 "scanner.l"
+#line 21 "scanner.l"
 
 
 

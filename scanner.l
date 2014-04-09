@@ -17,6 +17,7 @@ char* yytext2;
   return STRING; 
 }
 [ \t] ;
+<<EOF>> return END_OF_FILE;
 %%
 
 int yywrap(void)
