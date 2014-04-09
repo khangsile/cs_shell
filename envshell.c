@@ -6,15 +6,17 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include "builtin.h"
+#include "environ.h"
 
 #define MAX 100
+
+extern char** env;
 
 int builtinCommand(command* cmd);
 void executeBuiltin(int cmd, char** args, int argc);
 
 int main() {
-  char* environ[MAX];
-  //environ[0] = NULL:
+
   char* args[MAX];
 
   while(1) {
@@ -35,7 +37,6 @@ int main() {
     if(builtin = builtinCommand(&cmd)) {
       //      printf("Executing builtin... \n");
       executeBuiltin(builtin, cmd.args, cmd.arg_count);
-      printf("\n");
     } else { 
       //      printf("Executing non-builtin... \n");
       int child_status,pid;
@@ -45,7 +46,7 @@ int main() {
 	waitpid(pid,&child_status,0);
       } else {
 	// child process
-	int ret = execve(cmd.cmd,cmd.args,environ);
+	int ret = execve(cmd.cmd,cmd.args,env);
 	if(ret < 0)
 	  perror("Error");
 	exit(0);
@@ -76,4 +77,10 @@ int builtinCommand(command* cmd) {
 void executeBuiltin(int cmd, char** args, int argc) {
   if(cmd == SETDIR)
     setdir(args,argc);
+  if(cmd == LISTENV)
+    list_env();
+  if(cmd == SETENV)
+    set_env(args, argc);
+  if(cmd == UNSETENV)
+    unset_env(args, argc);
 }
