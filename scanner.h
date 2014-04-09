@@ -1,3 +1,3 @@
 
 
-struct token** getTokens(char*, struct token**);
+struct token** getTokens(struct token**);

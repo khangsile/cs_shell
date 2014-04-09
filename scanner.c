@@ -11,10 +11,8 @@ extern char* yytext;
 
 char* cpystr(char*);
 
-struct token** getTokens(char* prompt, struct token** head) {
+struct token** getTokens(struct token** head) {
   int ntoken, vtoken;
-
-  printf("%s > ", prompt);
 
   // Get head first. 
   ntoken = yylex();

@@ -8,6 +8,10 @@
 #include "builtin.h"
 #include "environ.h"
 #include <stdbool.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #define MAX 100
 
@@ -30,7 +34,9 @@ int main() {
   while(1) {
     struct token** tokenList = (struct token**) malloc(sizeof(struct token*)); 
     *tokenList = NULL;
-    getTokens(myprompt, tokenList);
+
+    printf("%s > ", myprompt);
+    getTokens(tokenList);
     
     if ((*tokenList)->type == NEWLINE) continue;
     
@@ -43,6 +49,20 @@ int main() {
       cmd.args[cmd.arg_count] = NULL;
     } else {
       printf("Max arguments exceeded.");
+    }
+
+    int in = 0, saved_stdin;
+    if(cmd.input != NULL) {
+      in = open(cmd.input, O_RDONLY);
+      saved_stdin = dup(0);
+      dup2(in, 0);
+    }
+
+    int out = 0, saved_stdout;
+    if(cmd.output != NULL) {
+      out = open(cmd.output, O_CREAT|O_WRONLY|O_TRUNC, S_IRUSR|S_IRGRP|S_IWGRP|S_IWUSR);
+      saved_stdout = dup(1);
+      dup2(out, 1);
     }
 
     int builtin;
@@ -64,6 +84,15 @@ int main() {
 	  perror("Error");
 	exit(0);
       }
+    }
+
+    if(cmd.input != NULL) {
+      close(in);
+      dup2(saved_stdin, 0);
+    }
+    if(cmd.output != NULL) {
+      close(out);
+      dup2(saved_stdout, 1);
     }
 
     freeTokenList(tokenList);
