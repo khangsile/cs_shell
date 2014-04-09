@@ -32,8 +32,9 @@ void addVar(char* var, char* value) {
     strcpy(entry,var);
     env[size++] = strcat(strcat(entry,"="),value);
     env[size] = NULL;
+    printf("%s\n", env[size-1]);
   }
-  printf("%s\n", env[size-1]);
+
 }
 
 int searchEnviron(char* var) {

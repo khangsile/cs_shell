@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include "builtin.h"
 #include "environ.h"
+#include <stdbool.h>
 
 #define MAX 100
 
@@ -14,6 +15,11 @@ extern char** env;
 
 int builtinCommand(command* cmd);
 void executeBuiltin(int cmd, char** args, int argc);
+
+bool validateBuiltin(int cmd, struct token** tokenList);
+bool validateSetenv(struct token** tokenList);
+bool validateUnsetenv(struct token** tokenList);
+bool validateListenv(struct token** tokenList);
 
 char* myprompt = "envsh";
 
@@ -41,9 +47,9 @@ int main() {
 
     int builtin;
     // if built in command
-    if(builtin = builtinCommand(&cmd)) {
-      //      printf("Executing builtin... \n");
-      executeBuiltin(builtin, cmd.args, cmd.arg_count);
+    if(cmd.builtin) {
+      if(validateBuiltin(cmd.builtin,tokenList))
+	executeBuiltin(cmd.builtin, cmd.args, cmd.arg_count);      
     } else { 
       //      printf("Executing non-builtin... \n");
       int child_status,pid;
@@ -64,21 +70,6 @@ int main() {
   }
 }
 
-int builtinCommand(command* cmd) {
-  if(!strcmp(cmd->cmd,"prompt"))
-    return PROMPT;
-  if(!strcmp(cmd->cmd,"setenv"))
-    return SETENV;
-  if(!strcmp(cmd->cmd,"unsetenv"))
-    return UNSETENV;
-  if(!strcmp(cmd->cmd,"listenv"))
-    return LISTENV;
-  if(!strcmp(cmd->cmd,"setdir"))
-    return SETDIR;
-  if(!strcmp(cmd->cmd,"bye"))
-    return BYE;
-  return 0;
-}
 
 void executeBuiltin(int cmd, char** args, int argc) {
   if(cmd == SETDIR)
@@ -99,4 +90,58 @@ void executeBuiltin(int cmd, char** args, int argc) {
     }
   }
 
+}
+
+bool validateBuiltin(int cmd, struct token** tokenList) {
+  if(cmd == SETENV)
+    return validateSetenv(tokenList);
+  if(cmd == UNSETENV)
+    return validateUnsetenv(tokenList);
+  if(cmd == LISTENV)
+    return validateListenv(tokenList);
+  return true;
+}
+
+bool validateListenv(struct token** tokenList) {
+  struct token* curr = *tokenList;
+  curr = curr->next;
+  if(curr != NULL && curr->type != NEWLINE) {
+    printf("Too many arguments.\n");
+    return false;
+  }
+}
+
+bool validateUnsetenv(struct token** tokenList) {
+  struct token* curr = *tokenList;
+  curr = curr->next;
+  if(curr != NULL && curr->type != WORD) {
+    printf("First argument must be a word.\n");
+    return false;
+  }
+  curr = curr->next;
+  if(curr != NULL && curr->type != NEWLINE) {
+    printf("Too many arguments.\n");
+    return false;
+  }
+  return true;
+}
+
+bool validateSetenv(struct token** tokenList) {
+  struct token* curr = *tokenList;
+  curr = curr->next;
+  if(curr != NULL && curr->type != WORD) {
+    printf("First argument must be a word.\n");
+    return false;
+  }
+  curr = curr->next;
+  if(curr != NULL && curr->type != STRING) {
+    printf("Second argument must be a string.\n");
+    return false;
+  }
+  curr = curr->next;
+  if(curr != NULL && curr->type != NEWLINE) {
+    printf("Too many arguments.\n");
+    return false;
+  }
+  return true;
 }
