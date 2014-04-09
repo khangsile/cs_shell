@@ -12,18 +12,21 @@
 int builtinCommand(command* cmd);
 void executeBuiltin(int cmd, char** args, int argc);
 
+char* myprompt = "envsh";
+
 int main() {
   char* environ[MAX];
   //environ[0] = NULL:
   char* args[MAX];
 
   while(1) {
-    printf("envsh > ");
-    struct token** tokenList = getTokens();
+    struct token* tokenList; getTokens(myprompt, &tokenList);
     command cmd;
     cmd.args = args;
-    parse(tokenList, &cmd);
+    parse(&tokenList, &cmd);
     // if num of args does not exceed capacity
+    //freeTokenList(tokenList);
+
     if(cmd.arg_count < MAX) {
       cmd.args[cmd.arg_count] = NULL;
     } else {
@@ -52,7 +55,6 @@ int main() {
       }
     }
 
-    //    freeTokenList(tokenList);
     //    freeCommand(cmd);
   }
 }
@@ -78,4 +80,11 @@ void executeBuiltin(int cmd, char** args, int argc) {
     setdir(args,argc);
   else if(cmd == BYE)
     bye();
+  else if(cmd == PROMPT) {
+    char* prompt1 = prompt(args,argc);
+    if (prompt1 != NULL) {
+      myprompt = malloc(strlen(prompt1)+1);
+      strcpy(myprompt, prompt1);
+    }
+  }
 }

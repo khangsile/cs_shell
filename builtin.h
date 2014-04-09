@@ -3,3 +3,4 @@
 
 void setdir(char** args, int argc);
 void bye();
+char* prompt(char** ags, int argc);

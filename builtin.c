@@ -18,3 +18,12 @@ void setdir(char** args, int argc) {
 void bye() {
   exit(0);
 }
+
+char* prompt(char** args, int argc) {
+  if (argc == 2) {
+    return args[1];
+  } else {
+    printf("Prompt requires one argument\n");
+    return NULL;
+  }
+}
