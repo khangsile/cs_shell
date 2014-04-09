@@ -1,4 +1,5 @@
 #include "builtin.h"
+#include <stdlib.h>
 
 void set_env(char** args, int argc) {
   if(argc > 2) {
@@ -33,5 +34,18 @@ void setdir(char** args, int argc) {
     }
   } else {
     printf("setdir requires a target directory\n");
+  }
+}
+
+void bye() {
+  exit(0);
+}
+
+char* prompt(char** args, int argc) {
+  if (argc == 2) {
+    return args[1];
+  } else {
+    printf("Prompt requires one argument\n");
+    return NULL;
   }
 }

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "parser.h"
 #include "variables.h"
+#include <string.h>
 
 void printCommand(command* cmd) {
   printf("cmd: %s, args: ", cmd->cmd);
@@ -43,7 +44,7 @@ void parse(struct token** tokenList, command* cmd) {
     t = t->next;
     // next token must be file
     if(t != NULL && t->type == WORD) {
-      cmd->input = t->text; 
+      cmd->input = t->text;
       t = t->next;
     } else {
       // syntax error

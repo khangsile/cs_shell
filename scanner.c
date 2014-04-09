@@ -11,25 +11,27 @@ extern char* yytext;
 
 char* cpystr(char*);
 void printToken(struct token*);
-struct token** getTokens();
 
-struct token** getTokens() {
+struct token** getTokens(char* prompt, struct token** head) {
   int ntoken, vtoken;
 
-  struct token **head = (struct token**) malloc(sizeof(struct token*));
-  // Get head first.                                                                                       
+  printf("%s > ", prompt);
+
+  // Get head first. 
+
   ntoken = yylex();
-  struct token *hd = (struct token*) malloc(sizeof(struct token));
+  struct token* hd = (struct token*) malloc(sizeof(struct token));
   hd->type = ntoken;
   hd->text = cpystr(yytext);
   hd->next = NULL;
-  //printToken(hd);
 
-  // Set the head ptr                                                                             
-  head = &hd;
+  *head = hd;
+
+  if (hd->type == NEWLINE)
+    return head;
 
   while(ntoken = yylex()) {
-    struct token *tk = (struct token*) malloc(sizeof(struct token));
+    struct token* tk = (struct token*) malloc(sizeof(struct token));
     tk->type = ntoken;
     tk->text = cpystr(yytext);
     tk->next = NULL;
@@ -37,11 +39,9 @@ struct token** getTokens() {
 
     if (ntoken == NEWLINE) break;
 
-    //printToken(tk);
+    printToken(tk);
     //    ntoken = yylex();
   }
-
-  //printf("We're done\n");
 
   return head;
 }
