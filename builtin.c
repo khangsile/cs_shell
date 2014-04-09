@@ -1,4 +1,5 @@
 #include "builtin.h"
+#include <stdlib.h>
 
 void setdir(char** args, int argc) {
   if(argc >= 2) {
@@ -12,4 +13,8 @@ void setdir(char** args, int argc) {
   } else {
     printf("setdir requires a target directory");
   }
+}
+
+void bye() {
+  exit(0);
 }

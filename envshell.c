@@ -68,4 +68,6 @@ int builtinCommand(struct command* cmd) {
 void executeBuiltin(int cmd, char** args, int argc) {
   if(cmd == SETDIR)
     setdir(args,argc);
+  else if(cmd == BYE)
+    bye();
 }
