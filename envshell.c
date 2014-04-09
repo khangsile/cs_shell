@@ -20,13 +20,17 @@ int main() {
   char* args[MAX];
 
   while(1) {
-    struct token* tokenList; getTokens(myprompt, &tokenList);
+    struct token** tokenList = (struct token**) malloc(sizeof(struct token*)); 
+    *tokenList = NULL;
+    getTokens(myprompt, tokenList);
+    
+    if ((*tokenList)->type == NEWLINE) continue;
+    
     command cmd;
     cmd.args = args;
-    parse(&tokenList, &cmd);
-    // if num of args does not exceed capacity
-    //freeTokenList(tokenList);
+    parse(tokenList, &cmd);
 
+    // if num of args does not exceed capacity
     if(cmd.arg_count < MAX) {
       cmd.args[cmd.arg_count] = NULL;
     } else {
@@ -55,7 +59,7 @@ int main() {
       }
     }
 
-    //    freeCommand(cmd);
+    freeTokenList(tokenList);
   }
 }
 

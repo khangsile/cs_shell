@@ -20,25 +20,26 @@ struct token** getTokens(char* prompt, struct token** head) {
   // Get head first. 
 
   ntoken = yylex();
-  struct token hd; // = (struct token*) malloc(sizeof(struct token));
-  hd.type = ntoken;
-  hd.text = cpystr(yytext);
-  hd.next = NULL;
-  //printToken(hd);
+  struct token* hd = (struct token*) malloc(sizeof(struct token));
+  hd->type = ntoken;
+  hd->text = cpystr(yytext);
+  hd->next = NULL;
 
-  // Set the head ptr                                                                             
-  *head = &hd;
+  *head = hd;
+
+  if (hd->type == NEWLINE)
+    return head;
 
   while(ntoken = yylex()) {
-    struct token tk; //= (struct token*) malloc(sizeof(struct token));
-    tk.type = ntoken;
-    tk.text = cpystr(yytext);
-    tk.next = NULL;
-    addToken(head, &tk);
+    struct token* tk = (struct token*) malloc(sizeof(struct token));
+    tk->type = ntoken;
+    tk->text = cpystr(yytext);
+    tk->next = NULL;
+    addToken(head, tk);
 
     if (ntoken == NEWLINE) break;
 
-    //printToken(tk);
+    printToken(tk);
     //    ntoken = yylex();
   }
 

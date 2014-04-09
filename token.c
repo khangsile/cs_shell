@@ -16,6 +16,7 @@ void addToken(struct token** head, struct token* t) {
 void freeTokenList(struct token** head) {
   struct token* curr = *head;
   freeTokens(curr);
+  free(head);
 }
 
 void freeTokens(struct token* t) {

@@ -10,3 +10,4 @@ typedef struct {
 }command;
 
 void parse(struct token** t, command* cmd);
+void printCommand(command* cmd);
