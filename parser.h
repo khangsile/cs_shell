@@ -1,12 +1,12 @@
 #include <stdlib.h>
 #include "token.h"
 
-struct command {
+typedef struct {
   char* cmd;
   char** args; 
   char* input;
   char* output;
   int arg_count;
-};
+}command;
 
-struct command* parse(struct token** t);
+void parse(struct token** t, command* cmd);

@@ -23,7 +23,7 @@ struct token** getTokens() {
   hd->type = ntoken;
   hd->text = cpystr(yytext);
   hd->next = NULL;
-  printToken(hd);
+  //printToken(hd);
 
   // Set the head ptr                                                                             
   head = &hd;
@@ -37,11 +37,11 @@ struct token** getTokens() {
 
     if (ntoken == NEWLINE) break;
 
-    printToken(tk);
+    //printToken(tk);
     //    ntoken = yylex();
   }
 
-  printf("We're done\n");
+  //printf("We're done\n");
 
   return head;
 }
