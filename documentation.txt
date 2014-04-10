@@ -34,5 +34,8 @@ executed. Otherwise, an error message is displayed and the command is ignored.
 For redirects, the command struct contains output and input file names to redirect to if the command contains
 redirects. If so, the file descriptor table is altered within the child process to make stdin and/or stdout
 point to the target files.
+Note: For redirects, if there is more than one file after the < or >, then the program will throw an errorand not execute the command. This is different from the actual shell which will actually just read/write the first file listed and ignore the second.
 
+Prompt:
+Because the fprint is buffered for the command prompt, we write the prompt out to stderr so that it is automatically flushed and so that the prompt is not included in an output file. 
 
