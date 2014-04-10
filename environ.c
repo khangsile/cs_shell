@@ -1,7 +1,12 @@
 #include "environ.h"
 
-char* env[MAX_VARS];
-int size;
+
+char** env;
+int size=0;
+
+void initializeEnv() {
+  env = malloc(sizeof(char*)*MAX_VARS);
+}
 
 void swapVars(int i, int j) {
   char* temp = env[i];

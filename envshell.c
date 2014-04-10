@@ -15,8 +15,6 @@
 
 #define MAX 100
 
-extern char** env;
-
 int builtinCommand(command* cmd);
 void executeBuiltin(int cmd, char** args, int argc);
 
@@ -29,8 +27,9 @@ bool validatePrompt(struct token** tokenList);
 char* myprompt = "envsh > ";
 
 int main() {
-
+  
   char* args[MAX];
+  initializeEnv();
 
   myprompt = malloc(sizeof(char) * strlen(myprompt));
   strcpy(myprompt, "envsh > ");
@@ -52,6 +51,7 @@ int main() {
     command cmd;
     cmd.args = args;
     parse(tokenList, &cmd);
+    cmd.args[cmd.arg_count] = NULL;
 
     // if num of args does not exceed capacity
     if(cmd.arg_count < MAX) {
@@ -103,7 +103,7 @@ int main() {
 	}
 	int ret = execve(cmd.cmd,cmd.args,env);
 	if(ret < 0)
-	  perror("error");
+	  perror("error11");
 	exit(0);
       }
     }
