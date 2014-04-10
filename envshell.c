@@ -38,8 +38,7 @@ int main() {
     struct token** tokenList = (struct token**) malloc(sizeof(struct token*)); 
     *tokenList = NULL;
 
-    printf("%s", myprompt);
-    fflush(stdout);
+    fprintf(stderr, "%s", myprompt);
 
     getTokens(tokenList);
 
@@ -47,7 +46,7 @@ int main() {
       freeTokenList(tokenList);
       continue;
     }
-    
+    printTokens(tokenList);
     command cmd;
     cmd.args = args;
     parse(tokenList, &cmd);
@@ -93,6 +92,7 @@ int main() {
 
 	int out = 0, saved_stdout;
 	if(cmd.output != NULL) {
+	  // open with permissions, create, write only, truncate, user permissions
 	  out = open(cmd.output, O_CREAT|O_WRONLY|O_TRUNC, S_IRUSR|S_IRGRP|S_IWGRP|S_IWUSR);
 	  if(in < 0) {
 	    printf("error: could not open file\n");
@@ -123,8 +123,10 @@ void executeBuiltin(int cmd, char** args, int argc) {
     set_env(args, argc);
   if(cmd == UNSETENV)
     unset_env(args, argc);
-  else if(cmd == BYE)
+  else if(cmd == BYE) {
+    free(myprompt);
     bye();
+  }
   else if(cmd == PROMPT) {
     char* prompt1 = prompt(args,argc);
     if (prompt1 != NULL) {

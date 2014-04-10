@@ -1,6 +1,10 @@
 
 Components:
 
+Scanner: The scanner utilizes lex in order to scan for specific regular expressions and returns tokens of the form, WORD, STRING, SPECIAL (metacharacter), or END-OF-LINE, in a linked list. This is made up of the lex.yy.c, scanner.l, scanner.c, and scanner.h files. 
+1) The scanner first calls the function yylex() to get the head of the linked list. 
+2) The scanner then loops to get the next tokens in the linked list until it reaches a newline or end of file character. It then returns the linked list, which is then fed to the parser.
+
 Parser: The parser receives a linked list of tokens to form a command struct. No elaborate algorithm is implemented
 to form a command from the token list.
 1) The parser expects the first token to be a word. This word is assumed to be the command. Errors are thrown

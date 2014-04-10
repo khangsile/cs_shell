@@ -1,0 +1,33 @@
+Khang Le, Tony Le
+
+List of files:
+
+Compilation:
+Makefile
+
+Documentation:
+documentation.txt
+
+Scanner:
+lex.yy.c
+scanner.c
+scanner.h
+scanner.l
+token.h
+token.c
+variables.h
+
+Parser:
+parser.h
+parser.c
+
+Environment Variables:
+environ.c
+environ.h
+
+Builtin:
+builtin.c
+builtin.h
+
+Main:
+envshell.c

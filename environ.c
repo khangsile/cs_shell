@@ -33,11 +33,12 @@ void addVar(char* var, char* value) {
   }
 
   if(size+1<MAX_VARS) {
-    char* entry = malloc(strlen(var)+strlen(value)+2*sizeof(char));
+    char* entry = malloc((strlen(var)+strlen(value)+2)*sizeof(char));
     strcpy(entry,var);
     env[size++] = strcat(strcat(entry,"="),value);
     env[size] = NULL;
     printf("%s\n", env[size-1]);
+    fflush(stdout);
   }
 
 }
@@ -60,5 +61,6 @@ void displayEnv() {
   int i=0;
   for(; i<size; i++) {
     printf("%s\n",env[i]);
+    fflush(stdout);
   }
 }
