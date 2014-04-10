@@ -34,14 +34,13 @@ int main() {
 
   myprompt = malloc(sizeof(char) * strlen(myprompt));
   strcpy(myprompt, "envsh > ");
-  printf("%s", myprompt);
-  fflush(stdout);
 
   while(1) {
     struct token** tokenList = (struct token**) malloc(sizeof(struct token*)); 
     *tokenList = NULL;
 
-    //printf("%s", myprompt);
+    printf("%s", myprompt);
+    fflush(stdout);
 
     getTokens(tokenList);
 
@@ -108,9 +107,6 @@ int main() {
 	exit(0);
       }
     }
-
-    printf("%s", myprompt);
-    fflush(stdout);
 
     freeTokenList(tokenList);
   }
