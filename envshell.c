@@ -47,7 +47,7 @@ int main() {
       freeTokenList(tokenList);
       continue;
     }
-    
+    printTokens(tokenList);
     command cmd;
     cmd.args = args;
     parse(tokenList, &cmd);
@@ -92,6 +92,7 @@ int main() {
 
 	int out = 0, saved_stdout;
 	if(cmd.output != NULL) {
+	  // open with permissions, create, write only, truncate, user permissions
 	  out = open(cmd.output, O_CREAT|O_WRONLY|O_TRUNC, S_IRUSR|S_IRGRP|S_IWGRP|S_IWUSR);
 	  if(in < 0) {
 	    printf("error: could not open file\n");
