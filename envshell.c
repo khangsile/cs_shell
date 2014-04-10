@@ -46,7 +46,7 @@ int main() {
       freeTokenList(tokenList);
       continue;
     }
-    printTokens(tokenList);
+
     command cmd;
     cmd.args = args;
     parse(tokenList, &cmd);
