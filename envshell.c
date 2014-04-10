@@ -31,14 +31,21 @@ int main() {
 
   char* args[MAX];
 
+  myprompt = malloc(sizeof(char) * strlen(myprompt));
+  strcpy(myprompt, "envsh");
+  printf("%s > ", myprompt);
+
   while(1) {
     struct token** tokenList = (struct token**) malloc(sizeof(struct token*)); 
     *tokenList = NULL;
 
-    printf("%s > ", myprompt);
     getTokens(tokenList);
-    
-    if ((*tokenList)->type == NEWLINE) continue;
+    printTokens(tokenList);
+    if ((*tokenList)->type == NEWLINE) {
+      printf("%s > ", myprompt);
+      continue;
+    }
+    if ((*tokenList)->type == SPECIAL && !strcmp((*tokenList)->text,"%")) continue;
     
     command cmd;
     cmd.args = args;
@@ -95,8 +102,11 @@ int main() {
       dup2(saved_stdout, 1);
     }
 
+    printf("%s > ", myprompt);
+
     freeTokenList(tokenList);
   }
+  free(myprompt);
 }
 
 
@@ -114,7 +124,8 @@ void executeBuiltin(int cmd, char** args, int argc) {
   else if(cmd == PROMPT) {
     char* prompt1 = prompt(args,argc);
     if (prompt1 != NULL) {
-      myprompt = malloc(strlen(prompt1)+1);
+      free(myprompt);
+      myprompt = malloc(sizeof(char)*(strlen(prompt1)+1));
       strcpy(myprompt, prompt1);
     }
   }
