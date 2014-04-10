@@ -64,10 +64,19 @@ void parse(struct token** tokenList, command* cmd) {
     if(t != NULL && t->type == WORD) {
       cmd->input = t->text;
       t = t->next;
+      if (t->type == WORD) {
+	cmd->cmd = NULL;
+	fprintf(stderr, "Too many files for redirect in.\n");
+	return;
+      }
     } else {
       // syntax error
+      cmd->cmd = NULL;
+      fprintf(stderr, "No file provided for redirect in.\n");
+      return;
     }      
   }
+  
   // check for redirect out
   if(t != NULL && t->type == SPECIAL && !strcmp(t->text,">")) {
     t = t->next;      
@@ -75,8 +84,16 @@ void parse(struct token** tokenList, command* cmd) {
     if(t != NULL && t->type == WORD) {
       cmd->output = t->text; 
       t = t->next;
+      if (t->type == WORD) {
+	cmd->cmd = NULL;
+	fprintf(stderr, "Too many files for redirect out.\n");
+	return;
+      }
     } else {
       // syntax error
+      cmd->cmd = NULL;
+      fprintf(stderr, "No file provided for redirect out.\n");
+      return;
     }      
   }
 

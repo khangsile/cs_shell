@@ -39,8 +39,7 @@ int main() {
     struct token** tokenList = (struct token**) malloc(sizeof(struct token*)); 
     *tokenList = NULL;
 
-    printf("%s", myprompt);
-    fflush(stdout);
+    fprintf(stderr, "%s", myprompt);
 
     getTokens(tokenList);
 
@@ -123,8 +122,10 @@ void executeBuiltin(int cmd, char** args, int argc) {
     set_env(args, argc);
   if(cmd == UNSETENV)
     unset_env(args, argc);
-  else if(cmd == BYE)
+  else if(cmd == BYE) {
+    free(myprompt);
     bye();
+  }
   else if(cmd == PROMPT) {
     char* prompt1 = prompt(args,argc);
     if (prompt1 != NULL) {
