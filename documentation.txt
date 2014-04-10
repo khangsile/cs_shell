@@ -1,0 +1,34 @@
+
+Components:
+
+Parser: The parser receives a linked list of tokens to form a command struct. No elaborate algorithm is implemented
+to form a command from the token list.
+1) The parser expects the first token to be a word. This word is assumed to be the command. Errors are thrown
+   for non-word tokens.
+2) All from the beginning of the list up to the first encountered EOL or metachar token are interpreted as
+   arguments.
+3) After the arguments, if there is a metachar token, we interpret it. The order of the redirects is assumed
+   to be redirect in before redirect out. An error is thrown otherwise.
+4) If command is a builtin command, then we mark the command struct as builtin.
+
+Environment variables:
+The environment variables are maintained by global array of string pointers. The environ.h provides the API
+for interacting with the environment variables. The environment variable array has a max size of 100 which
+can be changed in the environ.h file. 
+
+Main process:
+The envsh shell infinitely loops accepting a sentence after the prompt. The input is scanned by the scanner
+into a linked list of tokens that are labeled. The parser then receives the token list and forms a command
+based on the token list, determining if the token list is valid, if the command is builtin or not, and if
+redirects occur. The parser returns a command struct which holds all this information. For builtin commands
+the shell executes the command within the main process. For external files, the shell will fork, creating
+a child process. The child process will then execute execve with the environment variables and the arguments
+to overwrite the child process with the file. Returning to builtin commands, we first validate the input of
+the builtin commands with specific validators for each command. If the input is valid, then the command is
+executed. Otherwise, an error message is displayed and the command is ignored.
+
+For redirects, the command struct contains output and input file names to redirect to if the command contains
+redirects. If so, the file descriptor table is altered within the child process to make stdin and/or stdout
+point to the target files.
+
+
