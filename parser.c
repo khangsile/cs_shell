@@ -34,9 +34,13 @@ void parse(struct token** tokenList, command* cmd) {
   if(t != NULL) {
     if(t->type == WORD) {
       cmd->cmd = t->text;
+    } else if((t->type == SPECIAL && strcmp(t->text, "%")==0) || t->type == NEWLINE) {
+      // comment or empty
+      return;
     } else {
-      // error
-    }
+      printf("error: invalid command\n");
+      return;
+    }  
   }
 
   struct token* curr = t;

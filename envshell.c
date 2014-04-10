@@ -58,19 +58,9 @@ int main() {
       printf("Max arguments exceeded.");
     }
 
-    int in = 0, saved_stdin;
-    if(cmd.input != NULL) {
-      in = open(cmd.input, O_RDONLY);
-      saved_stdin = dup(0);
-      dup2(in, 0);
-    }
-
-    int out = 0, saved_stdout;
-    if(cmd.output != NULL) {
-      out = open(cmd.output, O_CREAT|O_WRONLY|O_TRUNC, S_IRUSR|S_IRGRP|S_IWGRP|S_IWUSR);
-      saved_stdout = dup(1);
-      dup2(out, 1);
-    }
+    // if no command to execute
+    if(cmd.cmd == NULL)
+      continue;
 
     int builtin;
     // if built in command
@@ -86,13 +76,35 @@ int main() {
 	waitpid(pid,&child_status,0);
       } else {
 	// child process
+	int in = 0, saved_stdin;
+	if(cmd.input != NULL) {
+	  in = open(cmd.input, O_RDONLY);
+	  if(in < 0) {
+	    printf("error: could not open file\n");
+	    continue;
+	  }
+	  saved_stdin = dup(0);
+	  dup2(in, 0);
+	}
+
+	int out = 0, saved_stdout;
+	if(cmd.output != NULL) {
+	  out = open(cmd.output, O_CREAT|O_WRONLY|O_TRUNC, S_IRUSR|S_IRGRP|S_IWGRP|S_IWUSR);
+	  if(in < 0) {
+	    printf("error: could not open file\n");
+	    continue;
+	  }
+	  saved_stdout = dup(1);
+	  dup2(out, 1);
+	}
 	int ret = execve(cmd.cmd,cmd.args,env);
 	if(ret < 0)
-	  perror("Error");
+	  perror("error");
 	exit(0);
       }
     }
 
+    /*
     if(cmd.input != NULL) {
       close(in);
       dup2(saved_stdin, 0);
@@ -100,7 +112,7 @@ int main() {
     if(cmd.output != NULL) {
       close(out);
       dup2(saved_stdout, 1);
-    }
+    } */
 
     printf("%s > ", myprompt);
 
