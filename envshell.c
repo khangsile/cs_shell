@@ -24,28 +24,31 @@ bool validateBuiltin(int cmd, struct token** tokenList);
 bool validateSetenv(struct token** tokenList);
 bool validateUnsetenv(struct token** tokenList);
 bool validateListenv(struct token** tokenList);
+bool validatePrompt(struct token** tokenList);
 
-char* myprompt = "envsh";
+char* myprompt = "envsh > ";
 
 int main() {
 
   char* args[MAX];
 
   myprompt = malloc(sizeof(char) * strlen(myprompt));
-  strcpy(myprompt, "envsh");
-  printf("%s > ", myprompt);
+  strcpy(myprompt, "envsh > ");
+  printf("%s", myprompt);
+  fflush(stdout);
 
   while(1) {
     struct token** tokenList = (struct token**) malloc(sizeof(struct token*)); 
     *tokenList = NULL;
 
+    //printf("%s", myprompt);
+
     getTokens(tokenList);
-    printTokens(tokenList);
+
     if ((*tokenList)->type == NEWLINE) {
-      printf("%s > ", myprompt);
+      freeTokenList(tokenList);
       continue;
     }
-    if ((*tokenList)->type == SPECIAL && !strcmp((*tokenList)->text,"%")) continue;
     
     command cmd;
     cmd.args = args;
@@ -58,9 +61,11 @@ int main() {
       printf("Max arguments exceeded.");
     }
 
-    // if no command to execute
-    if(cmd.cmd == NULL)
+    // if no command to execute or commented out
+    if(cmd.cmd == NULL) {
+      freeTokenList(tokenList);
       continue;
+    }
 
     int builtin;
     // if built in command
@@ -104,17 +109,8 @@ int main() {
       }
     }
 
-    /*
-    if(cmd.input != NULL) {
-      close(in);
-      dup2(saved_stdin, 0);
-    }
-    if(cmd.output != NULL) {
-      close(out);
-      dup2(saved_stdout, 1);
-    } */
-
-    printf("%s > ", myprompt);
+    printf("%s", myprompt);
+    fflush(stdout);
 
     freeTokenList(tokenList);
   }
@@ -151,6 +147,8 @@ bool validateBuiltin(int cmd, struct token** tokenList) {
     return validateUnsetenv(tokenList);
   if(cmd == LISTENV)
     return validateListenv(tokenList);
+  if(cmd == PROMPT)
+    return validatePrompt(tokenList);
   return true;
 }
 
@@ -188,6 +186,21 @@ bool validateSetenv(struct token** tokenList) {
   curr = curr->next;
   if(curr != NULL && curr->type != STRING) {
     printf("Second argument must be a string.\n");
+    return false;
+  }
+  curr = curr->next;
+  if(curr != NULL && curr->type != NEWLINE) {
+    printf("Too many arguments.\n");
+    return false;
+  }
+  return true;
+}
+
+bool validatePrompt(struct token** tokenList) {
+  struct token* curr = *tokenList;
+  curr = curr->next;
+  if(curr != NULL && curr->type != STRING) {
+    printf("Argument must be a string.\n");
     return false;
   }
   curr = curr->next;
